@@ -1,13 +1,47 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   const [confirmPassShow, setConfirmPassShow] = useState(false);
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const details = {
+      name,
+      email,
+      password,
+    };
+
+    let registerId = await fetch(`http://localhost:5000/registration`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      dataType: "json",
+      method: "POST",
+      body: JSON.stringify(details),
+    });
+
+    if (registerId.ok) {
+      navigate("/login");
+      alert("Registration Successfull");
+    }
+  };
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="bg-slate-50 p-10 rounded">
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="bg-slate-50 p-10 rounded"
+      >
         <p className="text-cyan-500 text-center pb-2 text-xl">
           Welcome to job site
         </p>
@@ -18,6 +52,8 @@ export default function Signup() {
           <input
             type="text"
             placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full px-3 py-1 focus:outline-none text-[14px] bg-transparent border rounded-[4px] placeholder:text-[12px] "
           />
         </div>
@@ -28,6 +64,8 @@ export default function Signup() {
           <input
             type="text"
             placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full px-3 py-1 focus:outline-none text-[14px] bg-transparent border rounded-[4px] placeholder:text-[12px] "
           />
         </div>
@@ -36,7 +74,8 @@ export default function Signup() {
             Password
           </label>
           <input
-            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-3 py-1 focus:outline-none text-[14px] bg-transparent border rounded-[4px] placeholder:text-[12px]  md:placeholder:text-[12px] focus:border-primary  transition ease-linear duration-100"
             type={`${confirmPassShow ? "text" : "password"}`}
             placeholder="Confirm password"
@@ -54,7 +93,7 @@ export default function Signup() {
             Sign in
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

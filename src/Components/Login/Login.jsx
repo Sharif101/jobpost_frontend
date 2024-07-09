@@ -1,14 +1,52 @@
-import React, { useState } from "react";
+import { useContext, useState } from "react";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { Auth } from "../../contexts/context";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const { dispatchAuth } = useContext(Auth);
+  const navigate = useNavigate();
+
   const [confirmPassShow, setConfirmPassShow] = useState(false);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      let logFetch = await fetch(`http://localhost:5000/login`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        dataType: "json",
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      let log = await logFetch.json();
+
+      if (logFetch.ok) {
+        dispatchAuth({ type: "token", payload: log.access_token });
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="bg-slate-50 p-10 rounded">
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="bg-slate-50 p-10 rounded"
+      >
         <p className="text-cyan-500 text-center pb-2 text-xl">Please Login</p>
         <div className="mb-1">
           <label htmlFor="" className="text-xs">
@@ -16,6 +54,8 @@ export default function Login() {
           </label>
           <input
             type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             className="w-full px-3 py-1 focus:outline-none text-[14px] bg-transparent border rounded-[4px] placeholder:text-[12px] "
           />
@@ -25,7 +65,8 @@ export default function Login() {
             Password
           </label>
           <input
-            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-3 py-1 focus:outline-none text-[14px] bg-transparent border rounded-[4px] placeholder:text-[12px]  md:placeholder:text-[12px] focus:border-primary  transition ease-linear duration-100"
             type={`${confirmPassShow ? "text" : "password"}`}
             placeholder="Confirm password"
@@ -49,7 +90,7 @@ export default function Login() {
             Sign in
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
