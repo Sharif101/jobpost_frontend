@@ -20,15 +20,18 @@ export default function Signup() {
       password,
     };
 
-    let registerId = await fetch(`http://localhost:5000/registration`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      dataType: "json",
-      method: "POST",
-      body: JSON.stringify(details),
-    });
+    let registerId = await fetch(
+      `https://jobbackend-pi.vercel.app/registration`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        dataType: "json",
+        method: "POST",
+        body: JSON.stringify(details),
+      }
+    );
 
     if (registerId.ok) {
       navigate("/login");

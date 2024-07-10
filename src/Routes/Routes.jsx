@@ -6,6 +6,7 @@ import Dashboard from "../Components/Dashboard/Dashboard";
 import Blog from "../Components/Blog/Blog";
 import Login from "../Components/Login/Login";
 import Signup from "../Components/Signup/Signup";
+import PrivateRoute from "./PrivateRoute";
 
 let router = createBrowserRouter([
   {
@@ -14,7 +15,11 @@ let router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: (
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",

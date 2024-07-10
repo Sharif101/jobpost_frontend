@@ -17,7 +17,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      let logFetch = await fetch(`http://localhost:5000/login`, {
+      let logFetch = await fetch(`https://jobbackend-pi.vercel.app/login`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export default function Login() {
       let log = await logFetch.json();
 
       if (logFetch.ok) {
-        dispatchAuth({ type: "token", payload: log.access_token });
+        dispatchAuth({ type: "token", payload: log.token });
         navigate("/");
       }
     } catch (error) {
@@ -89,6 +89,18 @@ export default function Login() {
           <button className="border text-[12px] bg-blue-400 text-white px-3 py-1 rounded">
             Sign in
           </button>
+        </div>
+
+        <div className="flex items-center justify-center mt-5">
+          <p
+            onClick={() => {
+              setEmail("sharif@gmail.com");
+              setPassword("1234");
+            }}
+            className="w-full border text-[12px] bg-slate-200 text-white px-3 py-1 rounded text-slate-700 font-bold text-center cursor-pointer"
+          >
+            Credentials
+          </p>
         </div>
       </form>
     </div>
