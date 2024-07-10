@@ -10,12 +10,14 @@ const Home = () => {
   const handleClose = () => setOpen(false);
 
   const category = [
-    { title: "soft" },
-    { title: "marketing" },
-    { title: "creative" },
-    { title: "sales" },
-    { title: "account" },
-    { title: "development" },
+    { title: "Digital Marketing" },
+    { title: "HR & Admiminstration" },
+    { title: "Management" },
+    { title: "Engineering" },
+    { title: "Creative" },
+    { title: "Sales & Marketing" },
+    { title: "Account" },
+    { title: "Development" },
   ];
 
   return (
@@ -28,15 +30,21 @@ const Home = () => {
           we are always on the lookout for talanted people
         </p>
         <div className="flex justify-end mt-5 mb-2">
-          <Button variant="outlined" onClick={handleOpen}>
-            Add Job Category
-          </Button>
+          <Button variant="outlined">Log out</Button>
         </div>
       </div>
       {/* ---------Accordion--------- */}
       <div>
         {category.map((data, index) => (
           <AccordionUse data={data} key={index}>
+            <div className="flex justify-end mt-1 mb-3">
+              <button
+                onClick={handleOpen}
+                className="border rounded px-2 py-1 text-[12px] border-zinc-800"
+              >
+                Add
+              </button>
+            </div>
             <div className="flex justify-between items-center">
               <p>Software Engineer</p>
               <div className="flex items-center gap-2">
@@ -55,13 +63,13 @@ const Home = () => {
         open={open}
         handleOpen={handleOpen}
         handleClose={handleClose}
-        title="Add Job Category"
+        title="Add JoB"
       >
         <form>
           <input
             type="text"
             className="w-full px-3 py-2 focus:outline-none text-[14px] bg-transparent border rounded-[4px] placeholder:text-[12px] border-slate-700"
-            placeholder="Enter Job Category"
+            placeholder="Enter Job title"
           />
           <div className="flex items-center justify-center mt-5">
             <Button type="submit" variant="outlined">
