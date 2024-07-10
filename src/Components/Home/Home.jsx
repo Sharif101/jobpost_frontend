@@ -2,11 +2,21 @@ import AccordionUse from "../Resources/AccordionUse/AccordionUse";
 import Button from "@mui/material/Button";
 import BasicModal from "../Resources/BasicModal/BasicModal";
 import { useState } from "react";
+import { AiTwotoneDelete } from "react-icons/ai";
 
 const Home = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const category = [
+    { title: "soft" },
+    { title: "marketing" },
+    { title: "creative" },
+    { title: "sales" },
+    { title: "account" },
+    { title: "development" },
+  ];
 
   return (
     <div className="w-9/12 mx-auto">
@@ -25,23 +35,19 @@ const Home = () => {
       </div>
       {/* ---------Accordion--------- */}
       <div>
-        <AccordionUse title="acc 1">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-            maiores praesentium laudantium facere libero harum rerum accusamus
-            nulla voluptates suscipit cum iure, ex sint eveniet voluptas.
-            Ducimus perferendis reiciendis facere.
-          </p>
-        </AccordionUse>
-
-        <AccordionUse title="acc 2">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-            maiores praesentium laudantium facere libero harum rerum accusamus
-            nulla voluptates suscipit cum iure, ex sint eveniet voluptas.
-            Ducimus perferendis reiciendis facere.
-          </p>
-        </AccordionUse>
+        {category.map((data, index) => (
+          <AccordionUse data={data} key={index}>
+            <div className="flex justify-between items-center">
+              <p>Software Engineer</p>
+              <div className="flex items-center gap-2">
+                <p>Apply Now</p>
+                <p className="cursor-pointer">
+                  <AiTwotoneDelete />
+                </p>
+              </div>
+            </div>
+          </AccordionUse>
+        ))}
       </div>
 
       {/* ------------Modal----------------- */}
