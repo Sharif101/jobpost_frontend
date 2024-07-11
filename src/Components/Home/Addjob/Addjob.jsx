@@ -3,9 +3,10 @@
 import { AiTwotoneDelete } from "react-icons/ai";
 import BasicModal from "../../Resources/BasicModal/BasicModal";
 import { useEffect, useState } from "react";
-import { AiTwotoneEye } from "react-icons/ai";
+import { AiTwotoneEdit } from "react-icons/ai";
 import { Button } from "@mui/material";
 import Editjob from "./Editjob/Editjob";
+import Singlejob from "./Singlejob/Singlejob";
 
 export default function Addjob({ data }) {
   const [open, setOpen] = useState(false);
@@ -19,8 +20,10 @@ export default function Addjob({ data }) {
   const [requirement, setRequirement] = useState("");
   const [description, setDescription] = useState("");
   const [edit, setEdit] = useState(false);
+  const [view, setView] = useState(false);
 
-  console.log(edit);
+  const [popup, setPupup] = useState(false);
+  const [viewpopup, setViewpopup] = useState(false);
 
   const [alljob, setAlljob] = useState([]);
 
@@ -82,7 +85,7 @@ export default function Addjob({ data }) {
     });
 
     if (registerId.ok) {
-      alert("Successfully added");
+      // alert("Successfully added");
       refreshPage();
     }
   };
@@ -97,30 +100,49 @@ export default function Addjob({ data }) {
           + Add Job
         </button>
       </div>
+      <hr />
       {alljob?.map((item, index) => (
-        <div key={index} className="flex justify-between items-center my-2">
-          <p className="text-[14px] font-bold">
-            {item.title}{" "}
-            <span className="font-light text-[12px]">-{item.location}</span>
-          </p>
-          <div className="flex items-center justify-end gap-2">
-            <p className="text-[14px] text-green-700 cursor-pointer ">
-              Apply Now
+        <>
+          <div key={index} className="flex justify-between items-center my-2">
+            <p className="text-[14px] font-bold">
+              {item.title}{" "}
+              <span className="font-light text-[12px]">-{item.location}</span>
             </p>
-            <p className="cursor-pointer">
-              <AiTwotoneEye
+            <div className="flex items-center justify-end gap-2">
+              <p
+                className="text-[12px] text-green-700 cursor-pointer"
                 onClick={() => {
-                  setEdit(index);
-                  // handleOpen();
+                  setView(index);
+                  setViewpopup(true);
                 }}
+              >
+                Apply Now
+              </p>
+              <p className="cursor-pointer">
+                <AiTwotoneEdit
+                  onClick={() => {
+                    setEdit(index);
+                    setPupup(true);
+                  }}
+                />
+              </p>
+              <p className="cursor-pointer">
+                <AiTwotoneDelete onClick={() => handleDelete(item._id)} />
+              </p>
+            </div>
+            {view === index && (
+              <Singlejob
+                item={item}
+                viewpopup={viewpopup}
+                setViewpopup={setViewpopup}
               />
-            </p>
-            <p className="cursor-pointer">
-              <AiTwotoneDelete onClick={() => handleDelete(item._id)} />
-            </p>
+            )}
+            {edit === index && (
+              <Editjob item={item} popup={popup} setPupup={setPupup} />
+            )}
           </div>
-          {edit === index && <Editjob item={item} />}
-        </div>
+          <hr />
+        </>
       ))}
 
       {open && (
@@ -156,7 +178,7 @@ export default function Addjob({ data }) {
               placeholder="Enter Job location"
               required
             />
-            <input
+            <textarea
               type="text"
               value={requirement}
               onChange={(e) => setRequirement(e.target.value)}
@@ -164,7 +186,7 @@ export default function Addjob({ data }) {
               placeholder="Enter Job requirement"
               required
             />
-            <input
+            <textarea
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}

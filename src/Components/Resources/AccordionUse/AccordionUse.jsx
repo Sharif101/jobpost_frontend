@@ -8,7 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 export default function AccordionUse({ children, data }) {
   return (
     <div>
-      <Accordion className="mb-2 mt-2">
+      <Accordion className="mb-2 mt-2 border border-solid border-stone-400">
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"
